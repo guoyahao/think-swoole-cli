@@ -14,6 +14,10 @@ tcp服务：php Swoole 扩展
 
 cd /think-swoole-cli
 
+----------------------------------------------------------------------
+
+服务端：
+
 php swoole.php cmd -t server -e help
 
 检查Server配置：
@@ -48,5 +52,11 @@ php swoole.php cmd -t server -e help
 		
       -n 指定服务进程名称，例如 php swoole.php cmd -t server -e start -n test, 则进程名称为SwooleServer-test	
 
-php swoole.php cmd -t server -e start
+----------------------------------------------------------------------
+
+客户端：
+
+php swoole.php Client/index
+
+
 
