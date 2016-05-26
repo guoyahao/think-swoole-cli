@@ -1,0 +1,90 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>{$meta_title}</h2>
+	</div>
+	<div class="cf">
+        <!-- 高级搜索 -->
+		<div class="search-form fl cf">
+			<div class="sleft">
+				<select class="fl ml10" name="s_type">
+					<option value="1" <if condition="I('s_type') eq 1">selected</if>>股票代码</option>
+					<option value="2" <if condition="I('s_type') eq 2">selected</if>>股票名称</option>
+					<option value="3" <if condition="I('s_type') eq 3">selected</if>>新浪行业</option>
+				</select>
+				<input type="text" name="keywords" class="search-input ml5" value="{:I('keywords')}" placeholder="请输入搜索内容">
+				<a class="sch-btn" href="javascript:;" id="search" url="{:U('stockList')}"><i class="btn-search"></i></a>
+			</div>
+		</div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+	<table class="">
+    <thead>
+        <tr id="order-box">
+			<th class="">股票代码</th>
+			<th class="">股票名称</th>
+			<th class="">新浪行业</th>
+			<th class="">新浪地域</th>
+			<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td>{$vo.stock_code} </td>
+			<td>{$vo.stock_name}</td>
+			<td>{$vo.sina_industry}</td>
+			<td>{$vo.sina_area}</td>
+			<td>
+				<a href="{:U('Stock/singlestockList',array('stockcode'=>$vo['stock_code']))}">查看详情</a>
+            </td>
+		</tr>
+		</volist>
+		<else/>
+		<td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+		</notempty>
+	</tbody>
+    </table>
+	</div>
+    <div class="page">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:U('Stock/stockList')}');
+	
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url'),query='';
+        var s_type  = $('.search-form').find('select[name="s_type"]').serialize();
+        var keywords  = $('.search-form').find('input[name="keywords"]').val();
+		
+		if( url.indexOf('?')>0 ){
+            url += '&' + s_type;
+        }else{
+            url += '?' + s_type;
+        }
+		
+		if(keywords.length>0){
+			keywords = keywords.replace(/\+*/g,'');
+			url += '&keywords='+keywords;
+		}
+		
+		window.location.href = url;
+	});
+	//回车搜索
+	$(".search-input").keyup(function(e){
+		if(e.keyCode === 13){
+			$("#search").click();
+			return false;
+		}
+	});
+	</script>
+</block>

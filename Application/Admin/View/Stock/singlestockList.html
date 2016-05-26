@@ -1,0 +1,120 @@
+<extend name="Public/base" />
+<block name="style">
+<style>
+	.ul-field li{ float:left; width:130px;}
+	.mt10{ margin-top:10px; }
+</style>
+</block>
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>{$meta_title}</h2>
+	</div>
+	<div class="cf">
+		<div>选择显示字段：<button class="btn" onclick="selected_field()">确 定</button></div>
+		<div class="fl">
+			<ul class="ul-field" id="ul-field">
+				<volist name="fielddata" id="field">
+				<if condition="in_array($key, $f)">
+				<li><label><input type="checkbox" name="field" value="{$key}" checked>{$field.val}</label></li>
+				<else/>
+				<li><label><input type="checkbox" name="field" value="{$key}">{$field.val}</label></li>
+				</if>
+				</volist>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="cf mt10">
+        <!-- 高级搜索 -->
+		<div class="search-form fl cf">
+			<div class="sleft">
+				<div class="fl">交易日期：
+					<input type="text" style="width: 130px;" name="time_s" class="text date" value="{:I('time_s')}" />&nbsp;至&nbsp;
+					<input type="text" style="width: 130px;" name="time_e" class="text date" value="{:I('time_e')}" />
+				</div>
+				<a class="sch-btn" href="javascript:;" id="search" url="{:U('singlestockList',array('stockcode'=>$_GET['stockcode'],'f'=>$_GET['f']))}"><i class="btn-search"></i></a>
+			</div>
+		</div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+	<table class="">
+    <thead>
+        <tr id="order-box">
+			<volist name="titledata" id="title">
+			<th class="">{$title}</th>
+			</volist>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<volist name="vo" id="voi">
+			<td>{$voi} </td>
+			</volist>
+		</tr>
+		</volist>
+		<else/>
+		<td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+		</notempty>
+	</tbody>
+    </table>
+	</div>
+    <div class="page">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+	<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+	<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+	<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:U('Stock/stockList')}');
+	
+	$('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+		minView: 2,
+        autoclose:true
+    });
+	
+	function selected_field(){
+		var fieldStr = '', fieldUrl = '{$field_url}';
+		$('#ul-field li input:checked').each(function(){
+			fieldStr += $(this).val()+'|';
+		})
+		
+		if(fieldStr.length > 0){
+			window.location.href = fieldUrl+'&f='+fieldStr;
+		}
+	}
+	
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url'),query='';
+        var time_s  = $('.search-form').find('input[name="time_s"]').serialize();
+        var time_e  = $('.search-form').find('input[name="time_e"]').serialize();
+		
+		if(time_s.length>10){
+			url += '&'+time_s;
+		}
+		if(time_e.length>10){
+			url += '&'+time_e;
+		}
+		
+		window.location.href = url;
+	});
+	//回车搜索
+	$(".search-input").keyup(function(e){
+		if(e.keyCode === 13){
+			$("#search").click();
+			return false;
+		}
+	});
+	</script>
+</block>
