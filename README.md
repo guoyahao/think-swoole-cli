@@ -1,5 +1,7 @@
 # think-swoole-cli  swoole-server-task
 
+QQ:515449117
+
 框架：thinkphp 
 
 入口文件：swoole.php
