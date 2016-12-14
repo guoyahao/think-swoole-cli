@@ -24,4 +24,10 @@ class TestController extends Controller
 	{
 		file_put_contents(APP_DATA_PATH."swoole-test/".time().".log",'writecvs is ok');
 	}
+	
+	
+	public function writecvs2()
+	{
+		file_put_contents(APP_DATA_PATH."swoole-test/".time().".log",'writecvs2 is ok');
+	}
 }

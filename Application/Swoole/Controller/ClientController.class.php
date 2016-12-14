@@ -22,10 +22,17 @@ class ClientController extends Controller
 	public function index()
 	{
 		$SendData = array(
+				0=>array(
 						'class'=>'Swoole\Controller\TestController', // task 任务类
 						'fun'=>'writecvs', // task 任务类-具体处理的方法
 						'data'=>'1123131313' // c参数
-				);
+				),
+				1=>array(
+						'class'=>'Swoole\Controller\TestController', // task 任务类
+						'fun'=>'writecvs2', // task 任务类-具体处理的方法
+						'data'=>'1123131313' // c参数
+				)
+		);
 		
 		// 先来1000个试试
  		for ($i=0;$i<=999;$i++)
