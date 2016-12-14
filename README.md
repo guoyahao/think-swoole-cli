@@ -6,6 +6,8 @@ QQ:515449117
 
 入口文件：swoole.php
 
+数据库文件：think-swoole-cli\Data
+
 主要处理模块：Application\Swoole
 
 tcp服务：php Swoole 扩展
